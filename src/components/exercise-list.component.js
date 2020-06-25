@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom'
 const Exercise = props =>(
     <tr>
         <td>{props.exercise.username}</td>
+        <td>{props.exercise.type}</td>
         <td>{props.exercise.description}</td>
-        <td>{props.exercise.duration + "minutes"}</td>
+        <td>{props.exercise.duration_hours + ':' + props.exercise.duration_min + ":" + props.exercise.duration_sec}</td>
         <td>{props.exercise.date.substring(0,10)}</td>
         <td>
             <Link to={"/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id)}}>delete</a>
@@ -57,6 +58,7 @@ export default class ExerciseList extends Component {
                     <thead className="thead-light" >
                         <tr>
                             <th>Username</th>
+                            <th>Type</th>
                             <th>Description</th>
                             <th>Duration</th>
                             <th>Date</th>

@@ -8,17 +8,24 @@ export default class EditExercise extends Component {
         super(props);
         
         this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeType = this.onChangeType.bind(this);
         this.onChangeDescript = this.onChangeDescript.bind(this);
-        this.onChangeDuration = this.onChangeDuration.bind(this);
+        this.onChangeDurationHrs = this.onChangeDurationHrs.bind(this);
+        this.onChangeDurationMin = this.onChangeDurationMin.bind(this);
+        this.onChangeDurationSec = this.onChangeDurationSec.bind(this);     
         this.onChangeDate = this.onChangeDate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state={
             username:'',
+            type: '',
             description: '',
-            duration: '',
+            duration_hours: '',
+            duration_min: '',
+            duration_sec: '',
             date: new Date(),
-            users: []
+            users: [],
+            types: ['long run', 'easy run', 'workout', 'race', 'cross-train']
         }
     }
 
@@ -27,9 +34,11 @@ export default class EditExercise extends Component {
             .then(response => {
                 this.setState({
                     username: response.data.username,
+                    type: response.data.type,
                     description: response.data.description,
-                    duration: response.data.duration,
-                    date: new Date(response.data.date)
+                    duration_hours: response.data.duration_hours,
+                    duration_min: response.data.duration_sec,
+                    date: new Date(response.data.date),
                 })
             })
         axios.get('http://localhost:5000/users/')
@@ -47,15 +56,32 @@ export default class EditExercise extends Component {
             username: entry.target.value,
         })
     }
-
+    onChangeType(entry) {
+        this.setState({
+            type: entry.target.value,
+        })
+    }
     onChangeDescript(entry) {
         this.setState({
             description: entry.target.value,
         })
     }
-    onChangeDuration(entry) {
+    onChangeDurationHrs(entry) {
+        let hours = entry.target.value
         this.setState({
-            duration: entry.target.value,
+            duration_hours: hours,
+        })
+    }
+    onChangeDurationMin(entry) {
+        let minutes = entry.target.value
+        this.setState({
+            duration_min: minutes,
+        })
+    }
+    onChangeDurationSec(entry) {
+        let seconds = entry.target.value
+        this.setState({
+            duration_sec: seconds,
         })
     }
     onChangeDate(date) {
@@ -69,17 +95,19 @@ export default class EditExercise extends Component {
 
         const exercise = {
             username: this.state.username,
+            type: this.state.type,
             description: this.state.description,
-            duration: this.state.duration,
+            duration_hours: this.state.duration_hours,
+            duration_min: this.state.duration_min,
+            duration_sec: this.state.duration_sec,
             date: this.state.date
         }
-
         console.log(exercise);
 
         axios.post('http://localhost:5000/exercises/update'+this.props.match.params.id, exercise)
             .then(res => console.log(res.data))
 
-        window.location = '/';
+       // window.location = '/';
     }
  
     render() {
@@ -106,6 +134,23 @@ export default class EditExercise extends Component {
 
                     </div>
                     <div className="form-group">
+                        <label>Exercise Type:</label>
+                        <select ref="userInput"
+                        required
+                        className="form-control"
+                        value={this.state.type}
+                        onChange={this.onChangeType} >
+                            {
+                                this.state.types.map(function(type) {
+                                    return <option
+                                    key={type}
+                                    value={type}>{type}
+                                    </option>
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div className="form-group">
                         <label>Description: </label>
                         <input type="text"
                             required
@@ -115,12 +160,30 @@ export default class EditExercise extends Component {
                             />
                     </div>
                     <div className="form-group">
+                        <label>Duration(hours): </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.duration_hours}
+                            onChange={this.onChangeDurationHrs} 
+                            />
+                    </div>
+                    <div className="form-group">
                         <label>Duration(minutes): </label>
                         <input type="text"
                             required
                             className="form-control"
-                            value={this.state.duration}
-                            onChange={this.onChangeDuration} 
+                            value={this.state.duration_min}
+                            onChange={this.onChangeDurationMin} 
+                            />
+                    </div>
+                    <div className="form-group">
+                        <label>Duration(seconds): </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.duration_sec}
+                            onChange={this.onChangeDurationSec} 
                             />
                     </div>
                     <div className="form-group" >
