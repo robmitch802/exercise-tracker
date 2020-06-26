@@ -37,7 +37,8 @@ export default class EditExercise extends Component {
                     type: response.data.type,
                     description: response.data.description,
                     duration_hours: response.data.duration_hours,
-                    duration_min: response.data.duration_sec,
+                    duration_min: response.data.duration_min,
+                    duration_sec: response.data.duration_sec,
                     date: new Date(response.data.date),
                 })
             })
@@ -51,39 +52,13 @@ export default class EditExercise extends Component {
             })
     }
 
-    onChangeUsername(entry) {
+    handleChange = (event) => {
+        let input = event.target.value
         this.setState({
-            username: entry.target.value,
+            [event.target.name]: input,
         })
     }
-    onChangeType(entry) {
-        this.setState({
-            type: entry.target.value,
-        })
-    }
-    onChangeDescript(entry) {
-        this.setState({
-            description: entry.target.value,
-        })
-    }
-    onChangeDurationHrs(entry) {
-        let hours = entry.target.value
-        this.setState({
-            duration_hours: hours,
-        })
-    }
-    onChangeDurationMin(entry) {
-        let minutes = entry.target.value
-        this.setState({
-            duration_min: minutes,
-        })
-    }
-    onChangeDurationSec(entry) {
-        let seconds = entry.target.value
-        this.setState({
-            duration_sec: seconds,
-        })
-    }
+
     onChangeDate(date) {
         this.setState({
             date: date,
@@ -104,7 +79,7 @@ export default class EditExercise extends Component {
         }
         console.log(exercise);
 
-        axios.post('http://localhost:5000/exercises/update'+this.props.match.params.id, exercise)
+        axios.post('http://localhost:5000/exercises/update/'+this.props.match.params.id, exercise)
             .then(res => console.log(res.data))
 
        // window.location = '/';
@@ -120,8 +95,9 @@ export default class EditExercise extends Component {
                         <select ref="userInput"
                             required
                             className="form-control"
+                            name="username"
                             value={this.state.username}
-                            onChange={this.onChangeUsername}>
+                            onChange={this.handleChange}>
                                 {
                                     this.state.users.map(function(user) {
                                         return <option 
@@ -138,8 +114,9 @@ export default class EditExercise extends Component {
                         <select ref="userInput"
                         required
                         className="form-control"
+                        name="type"
                         value={this.state.type}
-                        onChange={this.onChangeType} >
+                        onChange={this.handleChange} >
                             {
                                 this.state.types.map(function(type) {
                                     return <option
@@ -155,8 +132,9 @@ export default class EditExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="description"
                             value={this.state.description}
-                            onChange={this.onChangeDescript} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group">
@@ -164,8 +142,9 @@ export default class EditExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="duration_hours"
                             value={this.state.duration_hours}
-                            onChange={this.onChangeDurationHrs} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group">
@@ -173,8 +152,9 @@ export default class EditExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="duration_min"
                             value={this.state.duration_min}
-                            onChange={this.onChangeDurationMin} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group">
@@ -182,14 +162,16 @@ export default class EditExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="duration_sec"
                             value={this.state.duration_sec}
-                            onChange={this.onChangeDurationSec} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group" >
                         <label>Date: </label>
                         <div>
                             <DatePicker 
+                                name="date"
                                 selected={this.state.date}
                                 onChange={this.onChangeDate}
                                 />

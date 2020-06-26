@@ -28,7 +28,7 @@ export default class CreateExercise extends Component {
             types: ['long run', 'easy run', 'workout', 'race', 'cross-train']
         }
     }
-
+//pulls in users on page render
     componentDidMount() {
         axios.get('http://localhost:5000/users/')
             .then(response => {
@@ -40,45 +40,21 @@ export default class CreateExercise extends Component {
                 }
             })
     }
-
-    onChangeUsername(entry) {
+//event handler for form fields
+    handleChange = (event) => {
+        let input = event.target.value
         this.setState({
-            username: entry.target.value,
+            [event.target.name]: input
         })
     }
-    onChangeType(entry) {
-        this.setState({
-            type: entry.target.value,
-        })
-    }
-
-    onChangeDescript(entry) {
-        this.setState({
-            description: entry.target.value,
-        })
-    }
-    onChangeDurationHrs(entry) {
-        this.setState({
-            duration_hours: entry.target.value,
-        })
-    }
-    onChangeDurationMin(entry) {
-        this.setState({
-            duration_min: entry.target.value,
-        })
-    }
-    onChangeDurationSec(entry) {
-        this.setState({
-            duration_sec: entry.target.value,
-        })
-    }
-    
+//event handler specific to date field
     onChangeDate(date) {
         this.setState({
             date: date,
         })
     }
 
+//submit handler
     onSubmit(e) {
         e.preventDefault();
 
@@ -94,7 +70,7 @@ export default class CreateExercise extends Component {
 
         console.log(exercise);
 
-        axios.post('http://localhost:5000/exercises/add', exercise)
+        axios.post('http://localhost:5000/exercises/add/', exercise)
             .then(res => console.log(res.data))
 
         window.location = '/';
@@ -110,8 +86,9 @@ export default class CreateExercise extends Component {
                         <select ref="userInput"
                             required
                             className="form-control"
+                            name="username"
                             value={this.state.username}
-                            onChange={this.onChangeUsername}>
+                            onChange={this.handleChange}>
                                 {
                                     this.state.users.map(function(user) {
                                         return <option 
@@ -128,8 +105,9 @@ export default class CreateExercise extends Component {
                         <select ref="userInput"
                         required
                         className="form-control"
+                        name="type"
                         value={this.state.type}
-                        onChange={this.onChangeType} >
+                        onChange={this.handleChange} >
                             {
                                 this.state.types.map(function(type) {
                                     return <option
@@ -142,12 +120,13 @@ export default class CreateExercise extends Component {
                     </div>
                     <div className="form-group">
                         <label>Description: </label>
-                        <input type="textarea"
+                        <input type="text"
                             required
                             rows="3"
                             className="form-control"
+                            name="description"
                             value={this.state.description}
-                            onChange={this.onChangeDescript} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group">
@@ -155,8 +134,9 @@ export default class CreateExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="duration_hours"
                             value={this.state.duration_hours}
-                            onChange={this.onChangeDurationHrs} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group">
@@ -164,8 +144,9 @@ export default class CreateExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="duration_min"
                             value={this.state.duration_min}
-                            onChange={this.onChangeDurationMin} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group">
@@ -173,14 +154,16 @@ export default class CreateExercise extends Component {
                         <input type="text"
                             required
                             className="form-control"
+                            name="duration_sec"
                             value={this.state.duration_sec}
-                            onChange={this.onChangeDurationSec} 
+                            onChange={this.handleChange} 
                             />
                     </div>
                     <div className="form-group" >
                         <label>Date of Exercise: </label>
                         <div>
                             <DatePicker 
+                                name="date"
                                 selected={this.state.date}
                                 onChange={this.onChangeDate}
                                 />
