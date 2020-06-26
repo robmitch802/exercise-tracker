@@ -37,9 +37,15 @@ export default class ExercisePage extends Component {
     render() {
         return (
             <div>
-                <h3>Exercise Page</h3>  
+                <h3>Exercise Title</h3>  
                 <ul>
-                    
+            <div>Type: {this.state.exercise.type}</div>
+            <div>Description: {this.state.exercise.description}</div>
+            <div>Duration: {this.state.exercise.duration_hours}:{this.state.exercise.duration_min}:{this.state.exercise.duration_sec}</div>
+            <div>Date: {this.state.exercise.date}</div>
+            <div><a href="http://localhost:5000" >Back</a></div>
+
+)
                 </ul>       
             </div>
         )

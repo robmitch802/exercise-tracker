@@ -26,8 +26,15 @@ connection.once('open', () => {
 const exerciseRouter = require('./routes/exercises');
 const usersRouter = require('./routes/users');
 
+const getPage = async (req, res) => {
+    console.log("getting page request")
+    console.log(req.params.id)
+    res.send(report)
+}
+
 app.use('/exercises', exerciseRouter);
 app.use('/users', usersRouter);
+app.get('/exercise_page/:id', getPage)
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
+import ExercisePage from './exercise-page.component.js'
+
 
 
 //functional component for each exercise
@@ -12,21 +14,10 @@ const Exercise = props =>(
         <td>{props.exercise.duration_hours + ':' + props.exercise.duration_min + ":" + props.exercise.duration_sec}</td>
         <td>{props.exercise.date.substring(0,10)}</td>
         <td>
-            <Link to={"/edit/"+props.exercise._id}>edit</Link> | <Link to={"/page/"+props.exercise._id}>view</Link>| <a href="http://localhost:5000/" onClick={() => { props.deleteExercise(props.exercise._id)}}>delete</a>
+            <Link to={"/edit/"+props.exercise._id}>edit</Link> | <Link to={"/exercise_page/"+props.exercise._id}>view</Link>| <a href="http://localhost:5000" onClick={() => { props.deleteExercise(props.exercise._id)}}>delete</a>
         </td>
     </tr>
 )
-
-const ExercisePage = props => (
-    <h3>Exercise Title</h3>
-    <ul>
-        <li>Type: {props.exercise.type}</li>
-        <li>Description: {props.exercise.description}</li>
-        <li>Duration: {props.exercise.duration_hours}:{props.exercise.duration_min}:{props.exercise.duration_sec}</li>
-        <li>Date: {props.exercise.date}</li>
-    </ul>
-)
-
 
 export default class ExerciseList extends Component {
     constructor(props) {
@@ -36,8 +27,6 @@ export default class ExerciseList extends Component {
 
         this.state = {
             exercises: [],
-            currentexercise: '',
-            displayPage: false,
         };
     }
 
@@ -61,25 +50,16 @@ export default class ExerciseList extends Component {
             })
     }
 
-//renders individual exercise page
-    exercisePage() {
-        let displayStatus = !this.state.displayPage
-        this.setState({
-            displayPage: displayStatus
-        })
-    }
-
 //function to render excercise list
     exerciseList() {
         return this.state.exercises.map(currentexercise => {
-            return <Exercise exercise={currentexercise} deleteExercise={this.deleteExercise} exercisePage={this.exercisePage} key={currentexercise._id} />;
+            return <Exercise exercise={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id} />;
         })
     }
 
     render() {
         return (
             <div>
-                {this.state.displayPage ? 
                 <h3>Exercises: </h3>
                 <table className="table table-striped" >
                     <thead className="thead-light" >
@@ -96,8 +76,6 @@ export default class ExerciseList extends Component {
                        { this.exerciseList() }
                     </tbody>
                 </table> 
-                :
-                null }
             </div>
         )
     }

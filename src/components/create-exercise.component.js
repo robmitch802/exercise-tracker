@@ -3,6 +3,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 
+const homeuri = process.env.HOME_URI
+
 export default class CreateExercise extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +26,7 @@ export default class CreateExercise extends Component {
     }
 //pulls in users on page render
     componentDidMount() {
-        axios.get('http://localhost:5000/users/')
+        axios.get({homeuri})
             .then(response => {
                 if (response.data.length > 0) {
                     this.setState({
