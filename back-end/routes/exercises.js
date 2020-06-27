@@ -9,8 +9,14 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
     const username = req.body.username;
+    const title = req.body.title;
     const type = req.body.type;
     const description = req.body.description;
+    const distance = req.body.distance;
+    const unit = req.body.unit;
+    const pace = req.body.distance;
+    const shoe = req.body.shoe;
+    const path = req.body.path
     const duration_sec = Number(req.body.duration_sec);
     const duration_min = Number(req.body.duration_min);
     const duration_hours = Number(req.body.duration_hours);
@@ -18,7 +24,12 @@ router.route('/add').post((req, res) => {
 
     const newExercise = new Exercise({
         username,
+        title,
         type,
+        distance,
+        pace,
+        shoe,
+        path,
         description,
         duration_sec,
         duration_min,
